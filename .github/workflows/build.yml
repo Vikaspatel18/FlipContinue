@@ -21,8 +21,9 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
-      - name: Compile APK with Gradle
+      - name: Generate Gradle Wrapper & Build APK
         run: |
+          gradle wrapper --gradle-version 8.7
           chmod +x gradlew
           ./gradlew assembleDebug
 
