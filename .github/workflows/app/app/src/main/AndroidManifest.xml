@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.flipcontinue">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Needed on Android 11+ so our service can find launch intents for all installed apps -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <application
+        android:allowBackup="true"
+        android:label="FlipContinue"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
+        <!-- Samsung Z Flip Cover Screen Support Flag -->
+        <meta-data
+            android:name="com.samsung.android.multidisplay.keep_process_alive"
+            android:value="true" />
+
+        <!-- 1. Main Setup Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 2. Transparent Cover Screen Pill Activity -->
+        <activity
+            android:name=".CoverPillActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:theme="@style/Theme.AppCompat.Translucent.NoTitleBar">
+            <!-- Tells Samsung One UI this activity is allowed on the Cover Screen -->
+            <meta-data
+                android:name="com.samsung.android.activity.showOnSubDisplay"
+                android:value="true" />
+        </activity>
+
+        <!-- 3. Hinge & Foreground App Accessibility Service -->
+        <service
+            android:name=".FlipTrackerService"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+    </application>
+
+</manifest>
